@@ -1,0 +1,50 @@
+.cell{
+  margin-top: 50px;
+  min-width: 400px;
+  min-height: 400px;
+  outline: solid 1px black;
+  display:block;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+.automatonContainer{
+  display:inline-block;
+  width: 75%;
+  height: 100%;
+  outline: solid 1px green;
+}
+
+.automatonSettings{
+  display: inline-block;
+  width: 25%;
+  height: 100%;
+  outline: solid 1px yellow;
+}
+
+.simulation{
+  margin-left: 1%;
+  margin-right: 1%;
+  width: 98%;
+  height: 100%;
+  margin-top: 1%;
+  margin-bottom: 0;
+  display:block;
+  background-color: red;
+}
+
+.bottomLabel{
+  display:inline-block;
+  width: 33%;
+  vertical-align: middle;
+  margin-bottom: 1%;
+}
+.toplabel1{
+  display: inline-block;
+  width: 50%;
+}
+
+.toplabel2{
+  display: inline-block;
+  width: 50%;
+}
