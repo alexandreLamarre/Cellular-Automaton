@@ -1,0 +1,9 @@
+.rulesContainer{
+  display:block;
+  min-height: 200px;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  outline: solid 1px black;
+  background-color: white;
+}
