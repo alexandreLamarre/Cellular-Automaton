@@ -41,6 +41,7 @@ class Rules extends React.Component{
           <label>Range (r) : </label>
           <select onChange = {(e) => this.updateRules(e.target.value, null, null)}>
             <option value = "1"> 1 </option>
+            <option value = "0"> 0 </option>
             <option value = "2"> 2 </option>
             <option value = "3"> 3 </option>
           </select>

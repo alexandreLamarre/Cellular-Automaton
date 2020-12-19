@@ -1,7 +1,6 @@
 import React from "react";
 import "./AutomataCell.css";
 import {v4 as uuidv4} from "uuid";
-import ReactDOM from "react-dom";
 
 import Rules from "./Rules.js";
 
@@ -14,18 +13,29 @@ class AutomataCell extends React.Component{
       rows: 50,
       columns:50,
       automaton_type: "1D Elementary Cellular Automaton",
+      rules: [],
+      height: 0,
+      rules_id: 0,
     }
     this.canvas = React.createRef();
-    this.rule = React.createRef();
-    this.rules = [];
-    this.rules.push(this.rule);
   }
 
   componentDidMount(){
+    //setting up states
     const cell_id = uuidv4();
+    const rules = this.state.rules;
+    const height = document.getElementById("automatonContainer").offsetHeight;
+    const rules_id = this.state.rules_id;
+    console.log("div height", height);
+    rules.push(<Rules type = {this.state.automaton_type}
+      key = {rules_id}/>);
 
-    this.setState({cell_id:cell_id});
+    this.setState({cell_id:cell_id, rules: rules, height:height, rules_id:rules_id+1});
 
+    // adding resize event listener
+    window.onresize = (e) => this.changeHeight(e);
+
+    //drawing initial grid
     const ctx = this.canvas.current.getContext("2d");
     let s = Math.min(this.canvas.current.width/this.state.rows,
         this.canvas.current.height/this.state.columns);
@@ -87,8 +97,16 @@ class AutomataCell extends React.Component{
   }
 
   addAutomaton(e){
-    ReactDOM.render(<Rules type = {this.state.automaton_type}/>,
-      document.getElementById("automatonRules"));
+    const rules = this.state.rules;
+    const rules_id = this.state.rules_id;
+    rules.push(<Rules type = {this.state.automaton_type} key = {rules_id}/>);
+    this.setState({rules:rules, rules_id: rules_id+1});
+  }
+
+  changeHeight(e){
+    console.log("resizing document");
+    const height = document.getElementById("automatonContainer").offsetHeight;
+    this.setState({height: height});
   }
 
   render(){
@@ -97,6 +115,7 @@ class AutomataCell extends React.Component{
       className = "cell">
 
         <div id = "automatonContainer"
+        onResize = {(e) => this.changeHeight(e)}
         className = "automatonContainer">
             <div className = "toplabel1">
               <p> Select Automaton Type</p>
@@ -146,15 +165,19 @@ class AutomataCell extends React.Component{
             </div>
         </div>
         <div id = "automatonSettings"
+        style = {{maxHeight: this.state.height}}
         className = "automatonSettings">
 
 
           <p className = "settingsType"> {this.state.automaton_type} </p>
-          <div id = "automatonRules">
-          <Rules ref = {this.rule}/>
+          <div id = "rules_list"
+               className = "rules_list">
+            <div id = "automatonRules">
+              {this.state.rules}
+            </div>
+            <br/>
+            <button onClick = {(e) => this.addAutomaton(e)}> Add Cellular Automaton</button>
           </div>
-          <br/>
-          <button onClick = {(e) => this.addAutomaton(e)}> Add Cellular Automaton</button>
         </div>
 
       </div>

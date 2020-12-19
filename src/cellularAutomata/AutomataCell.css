@@ -14,7 +14,7 @@
   display:inline-block;
   width: 75%;
   height: 100%;
-  outline: solid 1px green;
+  overflow-y: auto;
 }
 
 .automatonSettings{
@@ -23,6 +23,11 @@
   display: inline-block;
   width: 25%;
   outline: solid 1px yellow;
+  overflow-y: auto;
+}
+
+.rules_list{
+
 }
 
 .settingsType{
