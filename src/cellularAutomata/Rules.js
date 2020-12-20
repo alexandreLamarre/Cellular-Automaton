@@ -1,7 +1,7 @@
 import React from "react";
 import Neighbors from "./Neighbors.js";
-import "reinvented-color-wheel/css/reinvented-color-wheel.min.css";
-import ReinventedColorWheel from "reinvented-color-wheel";
+// import "reinvented-color-wheel/css/reinvented-color-wheel.min.css";
+// import ReinventedColorWheel from "reinvented-color-wheel";
 import {v4 as uuidv4} from "uuid";
 
 import "./Rules.css";
@@ -53,14 +53,38 @@ class Rules extends React.Component{
     var input_id = this.state.input_id;
     const input_rules = [];
     console.log("rules dimension", this.state.dimension);
-    for(var i = 0; i < this.state.dimension; i++){
-      const numberRules = [];
-      for(var j = 0; j < 256; j++){
-        numberRules.push(<option key = {j.toString()} value = {j.toString()}> {j} </option>);
+    if(this.state.type === "Elementary"){
+      for(var i = 0; i < this.state.dimension; i++){
+        const numberRules = [];
+        for(var j = 0; j < 256; j++){
+          numberRules.push(<option key = {j.toString()} value = {j.toString()}> {j} </option>);
+        }
+        input_rules.push(<InputRule
+                          key = {input_id++}
+                          numberRules = {numberRules}
+                          label = "Rules"
+                          default = "0"
+                          id = {i}
+                          ></InputRule>);
       }
-      input_rules.push(<InputRule key = {input_id++} numberRules = {numberRules}></InputRule>);
+      console.log("input rules", input_rules);
     }
-    console.log("input rules", input_rules);
+    else if(this.state.type === "Totallistic"){
+      input_rules.push(<InputRule
+                        key = {input_id++}
+                        label = "Code"
+                        default = "0"
+                        id = {this.state.id}
+                        ></InputRule>);
+    }
+    else{
+      input_rules.push(<InputRule
+                        key = {input_id++}
+                        label = "Code"
+                        id = {this.state.id}
+                        default = "Copy custom code here"
+                        ></InputRule>);
+    }
     this.setState({input_rules: input_rules, input_id: input_id})
   }
 
@@ -130,7 +154,7 @@ class Rules extends React.Component{
             className = "squareColor">
           </div>
 
-
+          <br/>
         </div>
         <Neighbors
         ref = {this.neighbors}
@@ -148,6 +172,9 @@ class InputRule extends React.Component{
     super(props);
     this.state = {
       numberRules: this.props.numberRules,
+      label: this.props.label,
+      default: this.props.default,
+      id: this.props.id,
     }
     console.log("props passed to input rules", this.props)
   }
@@ -156,10 +183,10 @@ class InputRule extends React.Component{
     // console.log(this.state.numberRules)
     return (
       <div className = "inputRules">
-        <label>Rule</label>
-        <input id = "automatonRules"
+        <label> {this.state.label} </label>
+        <input id = {"automatonRules" + this.state.id}
           list = "numberRules"
-          defaultValue = "0">
+          placeholder = {this.state.default}>
         </input>
         <datalist id= "numberRules">
           {this.state.numberRules}
