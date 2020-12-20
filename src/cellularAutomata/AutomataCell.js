@@ -12,7 +12,8 @@ class AutomataCell extends React.Component{
       cell_id: 0,
       rows: 50,
       columns:50,
-      automaton_type: "1D Elementary Cellular Automaton",
+      automaton_type: "Elementary",
+      dimension: 1,
       rules: [],
       height: 0,
       rules_id: 0,
@@ -28,7 +29,8 @@ class AutomataCell extends React.Component{
     const rules_id = this.state.rules_id;
     console.log("div height", height);
     rules.push(<Rules type = {this.state.automaton_type}
-      key = {rules_id}/>);
+                      dimension= {this.state.dimension}
+                      key = {rules_id}/>);
 
     this.setState({cell_id:cell_id, rules: rules, height:height, rules_id:rules_id+1});
 
@@ -99,7 +101,9 @@ class AutomataCell extends React.Component{
   addAutomaton(e){
     const rules = this.state.rules;
     const rules_id = this.state.rules_id;
-    rules.push(<Rules type = {this.state.automaton_type} key = {rules_id}/>);
+    rules.push(<Rules type = {this.state.automaton_type}
+                      key = {rules_id}
+                      dimension = {this.state.dimension}/>);
     this.setState({rules:rules, rules_id: rules_id+1});
   }
 
@@ -109,27 +113,83 @@ class AutomataCell extends React.Component{
     this.setState({height: height});
   }
 
+
+  updateType(e){
+    const value = e.target.value;
+    const dimension = parseInt(value.match(new RegExp("[0-9]+D{1}"))[0]);
+    const type = value.includes("Elementary")? "Elementary":
+                 value.includes("Totallistic")? "Totallistic":
+                 "Custom";
+    this.setState({dimension: dimension, type:type});
+  }
+
+  updatePreset(e){
+
+  }
+
   render(){
     return(
       <div id = {"cell_"+this.state.cell_id}
       className = "cell">
 
         <div id = "automatonContainer"
-        onResize = {(e) => this.changeHeight(e)}
         className = "automatonContainer">
             <div className = "toplabel1">
               <p> Select Automaton Type</p>
-              <input list = "types"></input>
-              <datalist id = "types">
-                <option> 1D elementary cellular automaton </option>
-              </datalist>
+              <select list = "types" onChange = {e => this.updateType(e)}>
+                <option value = "1D Elementary">
+                1D Elementary Cellular Automata
+                </option>
+
+                <option value = "1D Totallistic">
+                1D Totallistic Celular Automata
+                </option>
+
+                <option value = "1D Custom">
+                1D Custom Celular Automata
+                </option>
+
+                <option value = "2D Elementary">
+                2D Elementary Cellular Automata
+                </option>
+
+                <option value = "2D Totallistic">
+                2D Totallistic Celular Automata
+                </option>
+
+                <option value = "2D Totallistic">
+                2D Custom Celular Automata
+                </option>
+
+                <option value = "3D Elementary">
+                3D Elementary Cellular Automata
+                </option>
+
+                <option value = "3D Totallistic">
+                3D Totallistic Celular Automata
+                </option>
+
+                <option value = "3D Totallistic">
+                3D Custom Celular Automata
+                </option>
+
+              </select>
+
             </div>
             <div className = "toplabel2">
-              <p> Select Preset </p>
-              <input list = "presets"></input>
-              <datalist id = "presets">
-                <option> Wire </option>
-              </datalist>
+              <p> Select Rule Preset </p>
+              <select onChange = {(e) => this.updatePreset(e)}>
+                <option value = "None">
+                  None
+                </option>
+                <option value = "Conway">
+                 2D Conway's Game of Life
+                </option>
+                <option value = "Wire">
+                2D Wire (Electronic Circuits)
+                </option>
+              </select>
+
             </div>
 
             <canvas id = "simulation"
@@ -158,10 +218,9 @@ class AutomataCell extends React.Component{
             </div>
             <div className = "bottomLabel">
               <p> k-Color </p>
-              <input list = "available-colors"></input>
-              <datalist id= "available-colors">
-                <option> This should show the available automaton colors </option>
-              </datalist>
+              <select>
+                <option> Black </option>
+              </select>
             </div>
         </div>
         <div id = "automatonSettings"
@@ -169,7 +228,7 @@ class AutomataCell extends React.Component{
         className = "automatonSettings">
 
 
-          <p className = "settingsType"> {this.state.automaton_type} </p>
+          <p className = "settingsType"> {this.state.dimension}D {this.state.automaton_type} Cellular Automata</p>
           <div id = "rules_list"
                className = "rules_list">
             <div id = "automatonRules">
