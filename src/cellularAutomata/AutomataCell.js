@@ -10,7 +10,7 @@ class AutomataCell extends React.Component{
     super(props);
     this.state = {
       cell_id: 0,
-      rows: 50,
+      rows: 100,
       columns:50,
       automaton_type: "Elementary",
       dimension: 1,
@@ -29,8 +29,10 @@ class AutomataCell extends React.Component{
     const rules_id = this.state.rules_id;
     console.log("div height", height);
     rules.push(<Rules type = {this.state.automaton_type}
+                      parent = {this}
                       dimension= {this.state.dimension}
-                      key = {rules_id}/>);
+                      key = {rules_id}
+                      id = {"rules" + rules_id.toString()}/>);
 
     this.setState({cell_id:cell_id, rules: rules, height:height, rules_id:rules_id+1});
 
@@ -52,7 +54,7 @@ class AutomataCell extends React.Component{
 
     ctx.strokeStyle = 'lightgrey'
     ctx.lineWidth = 0.5;
-    ctx.beginPath()
+    ctx.beginPath();
     for (var x = pL; x <= this.canvas.current.width - pR; x += s) {
       ctx.moveTo(x+0.5, pT+0.5)
       ctx.lineTo(x+0.5, (this.canvas.current.height - pB)+0.5)
@@ -61,7 +63,8 @@ class AutomataCell extends React.Component{
       ctx.moveTo(pL+0.5, y+0.5)
       ctx.lineTo((this.canvas.current.width - pR)+0.5, y+0.5)
     }
-    ctx.stroke()
+    ctx.stroke();
+    ctx.closePath();
   }
 
   regrid(rows, cols){
@@ -103,6 +106,8 @@ class AutomataCell extends React.Component{
     const rules_id = this.state.rules_id;
     rules.push(<Rules type = {this.state.automaton_type}
                       key = {rules_id}
+                      parent = {this}
+                      id = {"rules"+rules_id.toString()}
                       dimension = {this.state.dimension}/>);
     this.setState({rules:rules, rules_id: rules_id+1});
   }
@@ -120,7 +125,7 @@ class AutomataCell extends React.Component{
     const type = value.includes("Elementary")? "Elementary":
                  value.includes("Totallistic")? "Totallistic":
                  "Custom";
-    this.setState({dimension: dimension, type:type});
+    this.setState({dimension: dimension, automaton_type:type});
   }
 
   updatePreset(e){
@@ -157,7 +162,7 @@ class AutomataCell extends React.Component{
                 2D Totallistic Celular Automata
                 </option>
 
-                <option value = "2D Totallistic">
+                <option value = "2D Custom">
                 2D Custom Celular Automata
                 </option>
 
@@ -169,7 +174,7 @@ class AutomataCell extends React.Component{
                 3D Totallistic Celular Automata
                 </option>
 
-                <option value = "3D Totallistic">
+                <option value = "3D Custom">
                 3D Custom Celular Automata
                 </option>
 
@@ -224,7 +229,7 @@ class AutomataCell extends React.Component{
             </div>
         </div>
         <div id = "automatonSettings"
-        style = {{maxHeight: this.state.height}}
+        style = {{maxHeight: this.state.height, minHeight: this.state.height}}
         className = "automatonSettings">
 
 

@@ -8,3 +8,12 @@
   outline: solid 1px black;
   background-color: white;
 }
+
+.removeButton{
+  outline:none;
+  position: relative;
+  float:right;
+  margin-right: 0.5%;
+  margin-top: 0.5%;
+  background-color: #ffcccb;
+}

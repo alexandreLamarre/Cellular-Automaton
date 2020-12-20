@@ -22,7 +22,7 @@
   min-width: 25%;
   display: inline-block;
   width: 25%;
-  outline: solid 1px yellow;
+  outline: solid 1px black;
   overflow-y: auto;
 }
 
