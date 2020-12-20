@@ -24,6 +24,7 @@
   width: 25%;
   outline: solid 1px black;
   overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .rules_list{
@@ -64,4 +65,8 @@
 .toplabel2{
   display: inline-block;
   width: 50%;
+}
+
+.addAutomaton{
+  margin-bottom:10px;
 }

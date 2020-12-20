@@ -14,9 +14,9 @@ class AutomataCell extends React.Component{
       columns:50,
       automaton_type: "Elementary",
       dimension: 1,
-      rules: [],
-      height: 0,
-      rules_id: 0,
+      rules: [], //stores each of our React Rules components
+      height: 0, //stores height of right div
+      rules_id: 0, //keeps track of the next unique id for rules
     }
     this.canvas = React.createRef();
   }
@@ -65,6 +65,10 @@ class AutomataCell extends React.Component{
     }
     ctx.stroke();
     ctx.closePath();
+  }
+
+  componentDidUpdate(){
+    console.log(this.state);
   }
 
   regrid(rows, cols){
@@ -125,7 +129,24 @@ class AutomataCell extends React.Component{
     const type = value.includes("Elementary")? "Elementary":
                  value.includes("Totallistic")? "Totallistic":
                  "Custom";
-    this.setState({dimension: dimension, automaton_type:type});
+    //TODO: handle changing rule states and warning screen
+            // for unsaved changes if rules have been modified
+    const rules = this.state.rules;
+    for(var i = 0; i < rules.length; i++){
+      console.log(rules[i]);
+    }
+    const new_rules = [];
+    var rules_id = this.state.rules_id;
+    new_rules.push(<Rules type = {type}
+                      key = {rules_id}
+                      parent = {this}
+                      id = {"rules"+rules_id.toString()}
+                      dimension = {dimension}/>);
+    console.log("new_rules are", new_rules);
+    this.setState({dimension: dimension,
+                   automaton_type:type,
+                   rules_id: rules_id+1,
+                   rules:new_rules});
   }
 
   updatePreset(e){
@@ -240,7 +261,11 @@ class AutomataCell extends React.Component{
               {this.state.rules}
             </div>
             <br/>
-            <button onClick = {(e) => this.addAutomaton(e)}> Add Cellular Automaton</button>
+            <button
+            onClick = {(e) => this.addAutomaton(e)}
+            className = "addAutomaton"
+            disabled = {this.state.automaton_type === "Elementary"}
+            > Add Cellular Automaton</button>
           </div>
         </div>
 

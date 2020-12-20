@@ -12,14 +12,15 @@ class Rules extends React.Component{
     this.state = {
       color_state: false,
       range: 1,
-      dimension: 1,
+      dimension: this.props.dimension,
       color: 0,
       id: uuidv4(),
+      type: this.props.type,
+      input_id: 0,
     }
-    this.type = this.props.type;
     this.neighbors = React.createRef();
     this.parent = this.props.parent;
-    console.log(this.props.id)
+    console.log("rules id", this.state.id);
   }
 
 
@@ -49,11 +50,18 @@ class Rules extends React.Component{
     //   // console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
     //   },
     // })
-    const numberRules = [];
-    for(var i = 0; i < 256; i++){
-      numberRules.push(<option value = {i.toString()}> {i} </option>);
+    var input_id = this.state.input_id;
+    const input_rules = [];
+    console.log("rules dimension", this.state.dimension);
+    for(var i = 0; i < this.state.dimension; i++){
+      const numberRules = [];
+      for(var j = 0; j < 256; j++){
+        numberRules.push(<option key = {j.toString()} value = {j.toString()}> {j} </option>);
+      }
+      input_rules.push(<InputRule key = {input_id++} numberRules = {numberRules}></InputRule>);
     }
-    this.setState({numberRules:numberRules});
+    console.log("input rules", input_rules);
+    this.setState({input_rules: input_rules, input_id: input_id})
   }
 
 
@@ -72,7 +80,6 @@ class Rules extends React.Component{
 
   removeRule(e){
     const rules = this.parent.state.rules;
-    console.log(rules)
     for(var i = 0; i < rules.length; i++){
       if(rules[i].props.id === this.props.id) {
         rules.splice(i,1);
@@ -92,26 +99,36 @@ class Rules extends React.Component{
         <div className = "rules settings">
 
           <label>Range (r) : </label>
-          <select onChange = {(e) => this.updateRules(e.target.value, null, null)}>
+          <select
+          onChange = {(e) => this.updateRules(e.target.value, null, null)}
+          disabled = {this.state.type === "Elementary"}>
             <option value = "1"> 1 </option>
             <option value = "0"> 0 </option>
             <option value = "2"> 2 </option>
             <option value = "3"> 3 </option>
           </select>
-          <button className = "removeButton" onClick = {(e) => this.removeRule(e)}> X </button>
+          <button className = "removeButton"
+            onClick = {(e) => this.removeRule(e)}
+            disabled = {this.state.type === "Elementary"}>
+             X
+           </button>
           <br/>
-          <label> Rule </label>
-          <input id = "automatonRules"
-          list = "numberRules"
-          defaultValue = "0">
-          </input>
-          <datalist id= "numberRules">
-            {this.state.numberRules}
-          </datalist>
+          {this.state.input_rules}
+
           {/*
           <label> Color </label>
           <div id = {"colorwheel"+this.state.id.toString()}> </div>
           */}
+          <br></br>
+          <br></br>
+          <button>
+            Advanced Rule Settings
+          </button>
+          <p> Color </p>
+          <div
+            id ={"squareColor" + this.state.id}
+            className = "squareColor">
+          </div>
 
 
         </div>
@@ -125,3 +142,29 @@ class Rules extends React.Component{
 }
 
 export default Rules;
+
+class InputRule extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      numberRules: this.props.numberRules,
+    }
+    console.log("props passed to input rules", this.props)
+  }
+
+  render(){
+    // console.log(this.state.numberRules)
+    return (
+      <div className = "inputRules">
+        <label>Rule</label>
+        <input id = "automatonRules"
+          list = "numberRules"
+          defaultValue = "0">
+        </input>
+        <datalist id= "numberRules">
+          {this.state.numberRules}
+        </datalist>
+      </div>
+    )
+  }
+}
