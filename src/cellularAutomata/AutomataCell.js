@@ -27,7 +27,7 @@ class AutomataCell extends React.Component{
     const rules = this.state.rules;
     const height = document.getElementById("automatonContainer").offsetHeight;
     const rules_id = this.state.rules_id;
-    console.log("div height", height);
+    // console.log("div height", height);
     rules.push(<Rules type = {this.state.automaton_type}
                       parent = {this}
                       dimension= {this.state.dimension}
@@ -68,11 +68,11 @@ class AutomataCell extends React.Component{
   }
 
   componentDidUpdate(){
-    console.log(this.state);
+    // console.log(this.state);
   }
 
   regrid(rows, cols){
-    console.log(rows)
+    // console.log(rows)
     const new_rows = (rows === null || rows === undefined)? this.state.rows:
                                                                   parseInt(rows);
     const new_cols = (cols === null || cols === undefined)? this.state.columns:
@@ -133,7 +133,7 @@ class AutomataCell extends React.Component{
             // for unsaved changes if rules have been modified
     const rules = this.state.rules;
     for(var i = 0; i < rules.length; i++){
-      console.log(rules[i]);
+      // console.log(rules[i]);
     }
     const new_rules = [];
     var rules_id = this.state.rules_id;
@@ -142,7 +142,7 @@ class AutomataCell extends React.Component{
                       parent = {this}
                       id = {"rules"+rules_id.toString()}
                       dimension = {dimension}/>);
-    console.log("new_rules are", new_rules);
+    // console.log("new_rules are", new_rules);
     this.setState({dimension: dimension,
                    automaton_type:type,
                    rules_id: rules_id+1,
@@ -179,7 +179,8 @@ class AutomataCell extends React.Component{
                 2D Elementary Cellular Automata
                 </option>
 
-                <option value = "2D Totallistic">
+                <option value = "2D Totallistic"
+                disabled = {true}>
                 2D Totallistic Celular Automata
                 </option>
 
@@ -191,11 +192,13 @@ class AutomataCell extends React.Component{
                 3D Elementary Cellular Automata
                 </option>
 
-                <option value = "3D Totallistic">
+                <option value = "3D Totallistic"
+                disabled = {true}>
                 3D Totallistic Celular Automata
                 </option>
 
-                <option value = "3D Custom">
+                <option value = "3D Custom"
+                disabled = {true}>
                 3D Custom Celular Automata
                 </option>
 
@@ -208,10 +211,12 @@ class AutomataCell extends React.Component{
                 <option value = "None">
                   None
                 </option>
-                <option value = "Conway">
+                <option value = "Conway"
+                  disabled = {true}>
                  2D Conway's Game of Life
                 </option>
-                <option value = "Wire">
+                <option value = "Wire"
+                  disabled = {true}>
                 2D Wire (Electronic Circuits)
                 </option>
               </select>
@@ -266,6 +271,9 @@ class AutomataCell extends React.Component{
             className = "addAutomaton"
             disabled = {this.state.automaton_type === "Elementary"}
             > Add Cellular Automaton</button>
+            <button>
+              Configure Initial Layout
+            </button>
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import React from "react";
 import Neighbors from "./Neighbors.js";
 // import "reinvented-color-wheel/css/reinvented-color-wheel.min.css";
 // import ReinventedColorWheel from "reinvented-color-wheel";
+import ColorWheel from "./ColorWheel.js";
 import {v4 as uuidv4} from "uuid";
 
 import "./Rules.css";
@@ -13,43 +14,17 @@ class Rules extends React.Component{
       color_state: false,
       range: 1,
       dimension: this.props.dimension,
-      color: 0,
+      color: "#000000",
       id: uuidv4(),
       type: this.props.type,
       input_id: 0,
     }
-    this.neighbors = React.createRef();
     this.parent = this.props.parent;
     console.log("rules id", this.state.id);
   }
 
 
   componentDidMount(){
-    // CREATE COLOR WHEEL
-    // var colorWheel = new ReinventedColorWheel({
-    // // appendTo is the only required property. specify the parent element of the color wheel.
-    // appendTo: document.getElementById("colorwheel"+this.state.id),
-    //
-    // // followings are optional properties and their default values.
-    //
-    // // initial color (can be specified in hsv / hsl / rgb / hex)
-    // hsv: [0, 100, 100],
-    // // hsl: [0, 100, 50],
-    // // rgb: [255, 0, 0],
-    // // hex: "#ff0000",
-    //
-    // // appearance
-    // wheelDiameter: 200,
-    // wheelThickness: 20,
-    // handleDiameter: 16,
-    // wheelReflectsSaturation: true,
-    //
-    // // handler
-    // onChange: function (color) {
-    //   // the only argument is the ReinventedColorWheel instance itself.
-    //   // console.log("hsv:", color.hsv[0], color.hsv[1], color.hsv[2]);
-    //   },
-    // })
     var input_id = this.state.input_id;
     const input_rules = [];
     console.log("rules dimension", this.state.dimension);
@@ -115,6 +90,10 @@ class Rules extends React.Component{
     // node_to_remove.remove();
   }
 
+  setColor(e){
+    this.setState({color: e.target.color});
+  }
+
 
   render(){
     return(
@@ -125,7 +104,8 @@ class Rules extends React.Component{
           <label>Range (r) : </label>
           <select
           onChange = {(e) => this.updateRules(e.target.value, null, null)}
-          disabled = {this.state.type === "Elementary"}>
+          disabled = {this.state.type === "Elementary"
+                      || this.state.type === "Totallistic"}>
             <option value = "1"> 1 </option>
             <option value = "0"> 0 </option>
             <option value = "2"> 2 </option>
@@ -149,23 +129,27 @@ class Rules extends React.Component{
             Advanced Rule Settings
           </button>
           <p> Color </p>
-          <div
-            id ={"squareColor" + this.state.id}
-            className = "squareColor">
-          </div>
+          <input
+            type = "color"
+            onChange = {(e) => this.setColor(e)}
+            className = "colorPicker"
+            >
+          </input>
 
           <br/>
         </div>
-        <Neighbors
-        ref = {this.neighbors}
-        range = {this.state.range}
-        dimension = {this.state.dimension}/>
       </div>
     )
   }
 }
 
 export default Rules;
+
+
+
+
+
+
 
 class InputRule extends React.Component{
   constructor(props){
