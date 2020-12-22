@@ -10,8 +10,7 @@ class AutomataCell extends React.Component{
     super(props);
     this.state = {
       cell_id: 0,
-      rows: 100,
-      columns:50,
+      cells: 100,
       automaton_type: "Elementary",
       dimension: 1,
       rules: [], //stores each of our React Rules components
@@ -39,70 +38,79 @@ class AutomataCell extends React.Component{
     // adding resize event listener
     window.onresize = (e) => this.changeHeight(e);
 
+    const canvas = this.canvas.current;
+    console.log("canvas dimensions", canvas.height, canvas.width)
     //drawing initial grid
-    const ctx = this.canvas.current.getContext("2d");
-    let s = Math.min(this.canvas.current.width/this.state.rows,
-        this.canvas.current.height/this.state.columns);
-    let nX = Math.floor(this.canvas.current.width / s) - 2;
-    let nY = Math.floor(this.canvas.current.height / s) - 2;
-    let pX = this.canvas.current.width - nX * s;
-    let pY = this.canvas.current.height - nY * s;
-    let pL = pX / 2;
-    let pR = pX / 2;
-    let pT = pY / 2;
-    let pB = pY / 2;
-
-    ctx.strokeStyle = 'lightgrey'
-    ctx.lineWidth = 0.5;
-    ctx.beginPath();
-    for (var x = pL; x <= this.canvas.current.width - pR; x += s) {
-      ctx.moveTo(x+0.5, pT+0.5)
-      ctx.lineTo(x+0.5, (this.canvas.current.height - pB)+0.5)
-    }
-    for (var y = pT; y <= this.canvas.current.height - pB; y += s) {
-      ctx.moveTo(pL+0.5, y+0.5)
-      ctx.lineTo((this.canvas.current.width - pR)+0.5, y+0.5)
-    }
-    ctx.stroke();
-    ctx.closePath();
+    // const ctx = this.canvas.current.getContext("2d");
+    // let s = Math.min(this.canvas.current.width/this.state.rows,
+    //     this.canvas.current.height/this.state.columns);
+    // let nX = Math.floor(this.canvas.current.width / s) - 2;
+    // let nY = Math.floor(this.canvas.current.height / s) - 2;
+    // let pX = this.canvas.current.width - nX * s;
+    // let pY = this.canvas.current.height - nY * s;
+    // let pL = pX / 2;
+    // let pR = pX / 2;
+    // let pT = pY / 2;
+    // let pB = pY / 2;
+    //
+    // ctx.strokeStyle = 'lightgrey'
+    // ctx.lineWidth = 0.5;
+    // ctx.beginPath();
+    // for (var x = pL; x <= this.canvas.current.width - pR; x += s) {
+    //   ctx.moveTo(x+0.5, pT+0.5)
+    //   ctx.lineTo(x+0.5, (this.canvas.current.height - pB)+0.5)
+    // }
+    // for (var y = pT; y <= this.canvas.current.height - pB; y += s) {
+    //   ctx.moveTo(pL+0.5, y+0.5)
+    //   ctx.lineTo((this.canvas.current.width - pR)+0.5, y+0.5)
+    // }
+    // ctx.stroke();
+    // ctx.closePath();
   }
 
   componentDidUpdate(){
     // console.log(this.state);
   }
 
-  regrid(rows, cols){
-    // console.log(rows)
-    const new_rows = (rows === null || rows === undefined)? this.state.rows:
-                                                                  parseInt(rows);
-    const new_cols = (cols === null || cols === undefined)? this.state.columns:
-                                                                  parseInt(cols);
-    this.setState({rows: new_rows, columns: new_cols});
-    const ctx = this.canvas.current.getContext("2d");
-    ctx.clearRect(0,0, this.canvas.current.width, this.canvas.current.height);
-    let s = Math.min(this.canvas.current.width/new_rows,
-        this.canvas.current.height/new_cols);
-    let nX = Math.floor(this.canvas.current.width / s) - 2;
-    let nY = Math.floor(this.canvas.current.height / s) - 2;
-    let pX = this.canvas.current.width - nX * s;
-    let pY = this.canvas.current.height - nY * s;
-    let pL = pX / 2;
-    let pR = pX / 2;
-    let pT = pY / 2;
-    let pB = pY / 2;
+  // regrid(rows, cols){
+  //   // console.log(rows)
+  //   const new_rows = (rows === null || rows === undefined)? this.state.rows:
+  //                                                                 parseInt(rows);
+  //   const new_cols = (cols === null || cols === undefined)? this.state.columns:
+  //                                                                 parseInt(cols);
+  //   this.setState({rows: new_rows, columns: new_cols});
+  //   const ctx = this.canvas.current.getContext("2d");
+  //   ctx.clearRect(0,0, this.canvas.current.width, this.canvas.current.height);
+  //   let s = Math.min(this.canvas.current.width/new_rows,
+  //       this.canvas.current.height/new_cols);
+  //   let nX = Math.floor(this.canvas.current.width / s) - 2;
+  //   let nY = Math.floor(this.canvas.current.height / s) - 2;
+  //   let pX = this.canvas.current.width - nX * s;
+  //   let pY = this.canvas.current.height - nY * s;
+  //   let pL = pX / 2;
+  //   let pR = pX / 2;
+  //   let pT = pY / 2;
+  //   let pB = pY / 2;
+  //
+  //   ctx.strokeStyle = 'lightgrey'
+  //   ctx.lineWidth = 0.5;
+  //   ctx.beginPath()
+  //   for (var x = pL; x <= this.canvas.current.width - pR; x += s) {
+  //     ctx.moveTo(x+0.5, pT+0.5)
+  //     ctx.lineTo(x+0.5, (this.canvas.current.height - pB)+0.5)
+  //   }
+  //   for (var y = pT; y <= this.canvas.current.height - pB; y += s) {
+  //     ctx.moveTo(pL+0.5, y+0.5)
+  //     ctx.lineTo((this.canvas.current.width - pR)+0.5, y+0.5)
+  //   }
+  //   ctx.stroke()
+  // }
 
-    ctx.strokeStyle = 'lightgrey'
-    ctx.lineWidth = 0.5;
-    ctx.beginPath()
-    for (var x = pL; x <= this.canvas.current.width - pR; x += s) {
-      ctx.moveTo(x+0.5, pT+0.5)
-      ctx.lineTo(x+0.5, (this.canvas.current.height - pB)+0.5)
-    }
-    for (var y = pT; y <= this.canvas.current.height - pB; y += s) {
-      ctx.moveTo(pL+0.5, y+0.5)
-      ctx.lineTo((this.canvas.current.width - pR)+0.5, y+0.5)
-    }
-    ctx.stroke()
+  regrid(e){
+    const canvas = this.canvas.current;
+    canvas.style.width = e.target.value;
+    canvas.style.height = e.target.value;
+    this.setState({cells: e.target.value});
   }
 
   addAutomaton(e){
@@ -230,22 +238,29 @@ class AutomataCell extends React.Component{
 
 
             <div className = "bottomLabel">
-              <p> Rows:</p>
+              <p> Cells: {this.state.cells} x {this.state.cells}</p>
               <input type = "range"
               min = "10"
-              max = "100"
-              value = {this.state.rows}
-              onInput = {(e) => this.regrid(e.target.value, null)}>
+              max = "1000"
+              value = {this.state.cells}
+              onInput = {(e) => this.regrid(e)}>
               </input>
             </div>
+            {/*
             <div className = "bottomLabel">
               <p> Columns: </p>
               <input type = "range"
               min = "10"
               max = "50"
-              value = {this.state.columns}
-              onInput = {(e) => this.regrid(null, e.target.value)}>
+              value = {this.state.columns}>
               </input>
+            </div> */}
+            <div className = "bottomLabel">
+              <button> Zoom </button>
+              <br/>
+              <button> Browse plugins </button>
+              <br/>
+              <button> Run </button>
             </div>
             <div className = "bottomLabel">
               <p> k-Color </p>

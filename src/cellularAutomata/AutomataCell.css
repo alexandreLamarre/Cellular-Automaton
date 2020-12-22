@@ -42,13 +42,14 @@
   margin-left: 2.5%;
   margin-right: 2.5%;
   width: 95%;
-  min-height: 100%;
-  height: 100%;
+  max-width:1000px;
+  max-height:1000px;
   margin-top: 1%;
   margin-bottom: 0;
   display:block;
   background-color: white;
   outline: 1px solid black;
+  overflow:auto;
 }
 
 .bottomLabel{
